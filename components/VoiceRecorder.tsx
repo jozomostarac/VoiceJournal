@@ -1,32 +1,42 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import useAudioRecording from "../hooks/useAudioRecording";
+import { useState } from "react";
 
 export default function VoiceRecorder() {
+    const {
+        hasPermission,
+        isRecording,
+        duration,
+        startRecording,
+        stopRecording,
+        discardRecording,
+    } = useAudioRecording();
 
-    const [isRecording, setIsRecording] = useState(false);
-    const [recordingDuration, setRecordingDuration] = useState(0);
-    const [hasRecording, setHasRecording] = useState(false);
+    const [recordingUri, setRecordingUri] = useState<string | null>(null);
+    const hasRecording = recordingUri !== null;
 
-    const formatTime = (seconds: number) => {
+    const formatTime = (milliseconds: number) => {
+        const seconds = Math.floor(milliseconds / 1000);
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
+
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
       };
 
-    const startRecording = () => {
-        setIsRecording(true);
-        setRecordingDuration(0);
-        // TODO: Implement actual recording logic
-        console.log("Starting recording...");
+      const handleStartRecording = async () => {
+        setRecordingUri(null);
+        await startRecording();
       };
-    
-      const stopRecording = () => {
-        setIsRecording(false);
-        setHasRecording(true);
-        // TODO: Implement actual recording stop logic
-        console.log("Stopping recording...");
+
+      const handleStopRecording = async () => {
+        const uri = await stopRecording();
+        if (uri) {
+            setRecordingUri(uri);
+            saveRecording();
+        }
       };
+
     
       const saveRecording = () => {
         Alert.prompt(
@@ -46,7 +56,7 @@ export default function VoiceRecorder() {
                     id: Date.now().toString(),
                     name: name.trim(),
                     date: new Date(),
-                    duration: recordingDuration
+                    duration: duration
                   };
                   console.log("Recording saved:", entry);
                   
@@ -57,8 +67,9 @@ export default function VoiceRecorder() {
                       {
                         text: "OK",
                         onPress: () => {
-                          setHasRecording(false);
-                          setRecordingDuration(0);
+                        // TODO: Save the recording to the database
+                          setRecordingUri(null);
+                          discardRecording();
                         }
                       }
                     ]
@@ -75,7 +86,7 @@ export default function VoiceRecorder() {
         );
       };
     
-      const discardRecording = () => {
+      const handleDiscardRecording = () => {
         Alert.alert(
           "Discard Recording",
           "Are you sure you want to discard this recording?",
@@ -85,8 +96,8 @@ export default function VoiceRecorder() {
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                setHasRecording(false);
-                setRecordingDuration(0);
+                setRecordingUri(null);
+                discardRecording();
                 console.log("Recording discarded");
               }
             }
@@ -108,7 +119,7 @@ export default function VoiceRecorder() {
           </Text>
           <View style={styles.durationContainer}>
             <Text style={styles.durationText}>
-              {(isRecording || hasRecording) ? formatTime(recordingDuration) : "00:00"}
+              {(isRecording || hasRecording) ? formatTime(duration) : "00:00"}
             </Text>
           </View>
         </View>
@@ -116,7 +127,7 @@ export default function VoiceRecorder() {
      {!hasRecording ? (
        <TouchableOpacity
          style={[styles.recordButton, isRecording && styles.recordButtonActive]}
-         onPress={isRecording ? stopRecording : startRecording}
+         onPress={isRecording ? handleStopRecording : handleStartRecording}
          activeOpacity={0.8}
        >
          <MaterialIcons 
@@ -141,7 +152,7 @@ export default function VoiceRecorder() {
          
          <TouchableOpacity
            style={[styles.actionButton, styles.discardButton]}
-           onPress={discardRecording}
+           onPress={handleDiscardRecording}
            activeOpacity={0.8}
          >
            <MaterialIcons name="delete" size={32} color="#fff" />
