@@ -7,7 +7,7 @@ export default function useAudioRecording() {
     const [isRecording, setIsRecording] = useState(false);
     const [duration, setDuration] = useState(0); // milliseconds
     const durationIntervalRef = useRef<number | null>(null);
-    
+
     useEffect(() => {
         requestPermissions();
     }, [])
@@ -54,7 +54,7 @@ export default function useAudioRecording() {
                     console.error("Error getting recording status", error);
                 }
             }, 100);
-            
+
             console.log("Recording started");
         } catch (error) {
             console.error("Error starting recording", error);
@@ -85,7 +85,7 @@ export default function useAudioRecording() {
     const discardRecording = async () => {
         setDuration(0);
     }
-    
+
     useEffect(() => {
         const intervalRef = durationIntervalRef.current;
         return () => {

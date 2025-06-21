@@ -1,13 +1,13 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-    Alert,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -129,10 +129,10 @@ export default function MyJournal() {
             </Text>
           </View>
           <View style={styles.statusIndicator}>
-            <MaterialIcons 
-              name={entry.hasLocalRecording ? "audiotrack" : "cloud-download"} 
-              size={20} 
-              color={entry.hasLocalRecording ? "#27ae60" : "#95a5a6"} 
+            <MaterialIcons
+              name={entry.hasLocalRecording ? "audiotrack" : "cloud-download"}
+              size={20}
+              color={entry.hasLocalRecording ? "#27ae60" : "#95a5a6"}
             />
           </View>
         </View>
@@ -177,7 +177,7 @@ export default function MyJournal() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      
+
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>My Journal</Text>
@@ -187,7 +187,7 @@ export default function MyJournal() {
       </View>
 
       {/* Entries List */}
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >

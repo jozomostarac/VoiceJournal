@@ -12,7 +12,6 @@ export default function NewEntry() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      
       <View style={styles.topSection}>
         <View style={styles.header}>
           <Text style={styles.title}>New Journal Entry</Text>

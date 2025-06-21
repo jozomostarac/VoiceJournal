@@ -7,8 +7,8 @@ export default function TabLayout() {
       headerShown: false,
     }}
   >
-    <Tabs.Screen 
-      name="index" 
+    <Tabs.Screen
+      name="index"
       options={{
         title: "New Entry",
         tabBarIcon: ({ color }) => (
@@ -16,8 +16,8 @@ export default function TabLayout() {
         ),
       }}
     />
-    <Tabs.Screen 
-      name="my_journal" 
+    <Tabs.Screen
+      name="my_journal"
       options={{
         title: "My Journal",
         tabBarIcon: ({ color }) => (
