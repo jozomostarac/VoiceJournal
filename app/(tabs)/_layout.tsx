@@ -6,9 +6,10 @@ export default function TabLayout() {
     screenOptions={{
       headerShown: false,
     }}
+    initialRouteName="my_journal"
   >
     <Tabs.Screen
-      name="index"
+      name="new_entry"
       options={{
         title: "New Entry",
         tabBarIcon: ({ color }) => (
